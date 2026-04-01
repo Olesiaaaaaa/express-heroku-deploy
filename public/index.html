@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <title>Кодактор: поднимись на борД</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="©Илья Государев" />
+    <meta name="keywords" content="ГосДжС – JavaScript без страха" />
+    <meta name="coauthor" content="markup M.Vengerov; logo D.Ivanov" />
+
+    <!-- CSS: параметр версии для кэширования -->
+    <link rel="stylesheet" href="/css/board4_d86af.css?v=1" />
+
+    <!-- 🔧 ФИКС: переопределяем проблемные стили для картинок -->
+    <style>
+      /* 
+       * Проблема: в flex-контейнере img с width:auto может схлопнуться в 0px.
+       * Решение: явно задаём min-width и flex-shrink.
+       * Этот блок идёт ПОСЛЕ внешнего CSS, поэтому имеет приоритет.
+       */
+      .container img {
+        min-width: 48px !important; /* не давать сжиматься уже 48px */
+        flex-shrink: 0 !important; /* запретить сжатие во flex-контейнере */
+        display: block !important; /* убрать артефакты inline-элементов */
+        object-fit: contain !important; /* сохранять пропорции */
+      }
+    </style>
+
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <base target="_top" />
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="container">
+        <img src="/k2.png" alt="кодактор.рф" />
+      </div>
+
+      <div class="container">
+        <a href="https://kodaktor.ru/search/react">поиск</a>
+        <a
+          href="https://books.ifmo.ru/book/2648/osnovy_razrabotki_veb-prilozheniy_na_platformah_Node.js_i_Deno_:_uchebno-metodicheskoe_posobie..htm"
+          >Серверные веб-технологии</a
+        >
+      </div>
+
+      <div class="container">
+        <a href="/task_demo">форк</a>
+        <a href="//e.lanbook.com/book/206588">пособие</a>
+        <a target="_blank" href="/4io-1-2024-goss.pdf">статья</a>
+      </div>
+
+      <div class="container">
+        <!-- Держите открытой консоль: ⌘⌥J или Ctrl+Shift+J -->
+        <a href="https://kodaktor.ru/g/gosudarev">©И.Государев</a>
+        <a href="mailto:webmaster@kodaktor.ru">webmaster</a>
+      </div>
+    </div>
+  </body>
+</html>

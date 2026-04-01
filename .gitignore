@@ -2,3 +2,8 @@ node_modules/
 .env
 *.log
 .DS_Store
+
+# Исключаем большие файлы
+cloudflared.exe
+*.zip
+*.log

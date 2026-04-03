@@ -1,48 +1,45 @@
-// server.js
+// server.js — ПРОСТАЯ ВЕРСИЯ, порт 3336
+// 🌸 Теперь по главной ссылке открывается index.html с цветочками!
+
 const express = require('express')
 const path = require('path')
-const fs = require('fs')
 
 const app = express()
-const PORT = 3336
+const PORT = 3336 // 🔹 Только этот порт
 const PUBLIC_DIR = path.join(__dirname, 'public')
-// 🔹 Middleware: логирование запросов
+
+// 🔹 Парсеры для JSON и форм
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
+
+// 🔹 Логирование запросов (просто в консоль)
 app.use((req, res, next) => {
-  const logEntry = `${new Date().toISOString()} - ${req.method} ${req.url}\n`
-  const logPath = path.join(__dirname, 'request.log')
-
   console.log(`📥 ${req.method} ${req.url}`)
-
-  // Асинхронная запись лога без блокировки
-  fs.appendFile(logPath, logEntry, (err) => {
-    if (err) console.error('❌ Ошибка записи в лог:', err.message)
-  })
-
   next()
 })
 
-// 🔹 API-маршрут: возвращаем корректный JSON
-app.get('/', (req, res) => {
-  res.json({ Привет: 'мир!' }) // ✅ автоматически ставит Content-Type: application/json
+// 🔹 API маршруты (теперь на /api, чтобы не мешать статике)
+app.get('/api', (req, res) => {
+  res.json({ message: 'Привет, мир!', port: PORT })
 })
 
-// 🔹 Раздача статики (после API-маршрутов, но до 404)
-app.use(express.static(PUBLIC_DIR, { index: 'index.html' }))
-
-// 🔹 Спец-обработчик для CSS без расширения (если всё ещё нужен)
-app.use('/css/board4_d86af', (req, res, next) => {
-  res.setHeader('Content-Type', 'text/css; charset=utf-8')
-  next()
+app.get('/api/health', (req, res) => {
+  res.json({ status: 'ok', port: PORT })
 })
 
-// 🔹 Обработка 404 — всегда в конце
+// 🔹 Раздача статики (файлы из папки public)
+// ✅ Теперь при открытии / будет показан index.html
+app.use(express.static(PUBLIC_DIR))
+
+// 🔹 404 — если файл не найден
 app.use((req, res) => {
-  res.status(404).send(`⚠️ Файл не найден: ${req.url}`)
+  res.status(404).send(`❌ Страница не найдена: ${req.url}`)
 })
 
 // 🔹 Запуск сервера
 app.listen(PORT, () => {
-  console.log(`✅ Сервер запущен: http://localhost:${PORT}`)
+  console.log(`\n✅ Сервер: http://localhost:${PORT}`)
   console.log(`📁 Статика: ${PUBLIC_DIR}`)
-  console.log(`🔗 API: http://localhost:${PORT}/ → {"Привет":"мир!"}`)
+  console.log(`🌸 Главная: http://localhost:${PORT}/ → index.html`)
+  console.log(`🔗 API:    http://localhost:${PORT}/api\n`)
 })
